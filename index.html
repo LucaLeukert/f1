@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>F1 Long Run Dashboard (Client-only)</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>F1 Dashboard · Long Run Analyzer</h1>
+      <p>Client-only, static app (no backend)</p>
+    </header>
+
+    <section class="controls">
+      <label>Season <select id="seasonSelect"></select></label>
+      <label>Event <select id="eventSelect"></select></label>
+      <label>Session <select id="sessionSelect"></select></label>
+      <button id="analyzeBtn">Analyze Long Runs</button>
+      <button id="exportBtn" disabled>Export CSV</button>
+    </section>
+
+    <main>
+      <section class="card">
+        <h2>Detected Long Runs</h2>
+        <table id="longRunTable">
+          <thead>
+            <tr>
+              <th>Driver</th><th>Team</th><th>Compound</th><th>Laps</th><th>Pace (ms)</th><th>Deg (ms/lap)</th><th>Consistency (σ)</th><th>Confidence</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>Team Comparison</h2>
+        <table id="teamTable">
+          <thead>
+            <tr><th>Team</th><th>Avg Pace (ms)</th><th>Avg Deg (ms/lap)</th><th>Interpretation</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>Lap Times (Simple Chart)</h2>
+        <canvas id="lapChart" width="960" height="320"></canvas>
+      </section>
+    </main>
+
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>
