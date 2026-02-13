@@ -14,7 +14,7 @@ function analyze(sessionData) {
   const runs = [];
   for (const driver of sessionData.drivers) {
     const laps = (byDriver.get(driver.code) || []).sort((a, b) => a.lap - b.lap);
-    const validLaps = laps.filter((l) => l.valid);
+    const validLaps = laps.filter((l) => l.valid !== false);
     if (validLaps.length < 8) continue;
 
     const lapTimes = validLaps.map((l) => l.lapTimeMs);
@@ -25,11 +25,12 @@ function analyze(sessionData) {
     const deg = slope(filtered);
     const std = stdev(filtered);
     const confidence = confidenceScore(filtered.length, std, deg);
+    const compound = dominantCompound(validLaps) || driver.compound || 'UNK';
 
     runs.push({
       driver: driver.code,
-      team: driver.team,
-      compound: driver.compound,
+      team: driver.team || 'Unknown',
+      compound,
       laps: filtered.length,
       paceMs: Math.round(trimmed),
       degradationMsPerLap: Number(deg.toFixed(1)),
@@ -40,6 +41,15 @@ function analyze(sessionData) {
 
   const teams = aggregateTeams(runs);
   return { runs, teams };
+}
+
+function dominantCompound(laps) {
+  const counter = new Map();
+  for (const lap of laps) {
+    const c = lap.compound || 'UNK';
+    counter.set(c, (counter.get(c) || 0) + 1);
+  }
+  return [...counter.entries()].sort((a, b) => b[1] - a[1])[0]?.[0];
 }
 
 function filterOutliers(values) {

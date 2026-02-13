@@ -1,0 +1,9 @@
+{
+  "name": "f1-dashboard-client-only",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "serve": "python3 -m http.server 4173",
+    "tunnel": "npx localtunnel --port 4173"
+  }
+}
